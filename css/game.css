@@ -1,0 +1,59 @@
+
+@keyframes game_end_show{
+	0% {opacity: 0; }
+	100% {opacity: 1; }
+}
+
+#game_end{
+	display: none;
+	position: fixed;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.75);
+
+	color:white;
+	text-align: center;
+
+	z-index: 10;
+}
+	#game_end_img{
+		margin-top: 5%;
+		max-height: 40%;
+		min-height: 35%;
+	}
+	#game_end_info{
+		margin-top: 16px;
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+		font-size: 24px;
+		text-align: center;
+	}
+		.score{
+			color:rgb(128,255,128);
+			font-size: 36px;
+			font-weight: bold;
+		}
+		.floor{
+			color:rgb(255,255,128);
+			font-size: 36px;
+			font-weight: bold;
+		}
+		.small{
+			font-size: 20px;
+		}
+			.percent{
+				color:rgb(255,128,255);
+				font-size: 32px;
+				font-weight: bold;
+			}
+	.game_end_button{
+		width: 40%;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 16px;
+		font-size: 24px;
+		font-weight: bold;
+	}
