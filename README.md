@@ -1,2 +1,2 @@
-###  php目录下有composer.json文件
+###  php目录下有composer.json和sql
 
