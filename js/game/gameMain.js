@@ -1,14 +1,45 @@
+// cookie
+
+function setCookie(name,value){
+	var Days = 60;
+	var exp = new Date();
+	exp.setTime(exp.getTime() + Days*24*60*60*1000);
+	document.cookie = name + "="+ escape(value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name){
+	var arr, reg = new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+	if(arr=document.cookie.match(reg)) return unescape(arr[2]);
+	else return null;
+}
+function delCookie(name){
+	var exp = new Date();
+	exp.setTime(exp.getTime() - 1);
+	var cval = getCookie(name);
+	if(cval!=null)
+		document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
 
 
 function Game() {
     throw new Error('This is a static class');
 }
 
+Game.Newer = !getCookie('new');
+
 Game.Setting = {
 	// image settings
 	BackgroundImage : 'img/background.png',
 	HumanPic : 'img/human.png',
 	GameOverPic : 'img/gameover.png',
+	GuideArrowPic : 'img/pointer.png',
+
+	GuideTextStyle : {
+		fontSize: '25px',
+		fill: 'white',
+		stroke: 'black',
+		strokeThickness: 4,
+		align : 'center',
+	},
 	ScoreDisplayStyle : {
 		fontSize: '28px',
 		fill: 'white',
@@ -39,6 +70,8 @@ Game.Setting = {
 		'special' : [0xffff00,1],
 	},
 
+	GuideHighlightColor : [0xffffff,0.05],
+	GuideBackgroundColor : [0,0.4],
 
 	// position settings
 	GlobalPadding : 4, // padding
@@ -59,6 +92,8 @@ Game.Setting = {
 	ScoreAddDisplayAniWait : 20,
 	ScoreAddDisplayAniYRate : 2,
 	ScoreAddDisplayAniAlphaRate : 0.04,
+
+	NewerSpeedDownRate : 2.5,
 
 	DeathTexts : ['你从高处摔了下来','你落地过猛',
 		'你从楼梯上掉了下来','信仰之跃','你感受到了引力'],
@@ -227,6 +262,7 @@ Game._createGameObjects = function() {
     this._createBackground();
     this._createMainSprites();
     this._createScore();
+    this._createNewerGuide();
     this._createGameEnd();
 };
 Game._createBackground = function() {
@@ -238,6 +274,16 @@ Game._createScore = function() {
     this._scoreDisplay = new PIXI.Text('',
     	Game.Setting.ScoreDisplayStyle);
     this._stage.addChild(this._scoreDisplay); 
+};
+Game._createNewerGuide = function() {
+	if(!Game.Newer) return;
+	this._newerGuide = new NewerGuide();
+
+	this._stage.addChild(this._newerGuide);
+};
+Game.insidePointerRect = function(event) {
+	if(!this._newerGuide) return true;
+	return this._newerGuide.insidePointerRect(event);
 };
 Game._createGameEnd = function() {
 	this._gameEnd = document.createElement('div');
@@ -259,11 +305,17 @@ Game._createGameEnd = function() {
 	this._gotoRecruit.className = 'game_end_button';
 	this._gotoRecruit.innerHTML = '马上报名 >';
 	this._gotoRecruit.addEventListener('click',this.gotoRecruit.bind(this));
+
+	this._needGuide = document.createElement('div');
+	this._needGuide.className = 'game_end_button';
+	this._needGuide.innerHTML = '观看教程 >';
+	this._needGuide.addEventListener('click',this.needGudie.bind(this));
 	
     this._gameEnd.appendChild(this._gameEndImg);
     this._gameEnd.appendChild(this._gameEndInfo);
     this._gameEnd.appendChild(this._resumeGame);
     this._gameEnd.appendChild(this._gotoRecruit);
+    this._gameEnd.appendChild(this._needGuide);
     document.body.appendChild(this._gameEnd);
 };
 Game.showGameEnd = function() {	
@@ -295,6 +347,10 @@ Game.onUploadFinished = function(data) {
 	if(!data.status) return alert(data.msg);
 	this._gameEndInfo.innerHTML += '<span class="small">你击败了 <span class="percent">'+data.score+'%</span> 的人</span>';
 
+};
+Game.needGudie = function() {
+	delCookie('new');
+	window.location.reload();
 };
 Game.resumeGame = function() {
 	window.location.reload();

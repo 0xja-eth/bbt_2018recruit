@@ -146,6 +146,7 @@ GameTable.prototype.scrollUp = function(count){
                 Game.Setting.BlockType['null']);
     }
     this._humanPos[1]-=count;
+    this.redrawUpperStairs();
 }
 /* stairsPattern:
     {x,y,type}
@@ -218,14 +219,18 @@ GameTable.prototype.drawBlock = function(x,y){
     this._contents.endFill();
 }
 GameTable.prototype.drawUpperBlock = function(x,y,type,valid){ 
-    var blend = valid ? 0x00ff00 : 0xff0000;
+    var alpha = valid ? 0.75 : 0.6;
     var bw = this.blockWidth();
     var bh = this.blockHeight();
     var bPos = this.innerBlockPosition(x,y);
     var key = this.checkType(type);
     var color = Game.Setting.BlockColor[key];
+    var rcolor = valid ? (color[0]+0x00ff00) : (0x808080);
+    if(!valid && type == Game.Setting.BlockType['connection']){
+        rcolor = Game.Setting.BlockColor['connection'][0];
+    }
 
-    this._upper.beginFill((color[0]+blend),color[1]*0.35);
+    this._upper.beginFill(rcolor,color[1]*alpha);
     this._upper.drawRect(bPos.x,bPos.y,bw,bh);
     this._upper.endFill();
 }
@@ -270,27 +275,24 @@ GameTable.prototype.redrawAllTable = function(){
 }
 GameTable.prototype.drawUpperStairs = function(x,y,pattern,valid){ 
     this._upper.clear();
-/*
-    var lineColor = Game.Setting.TableBgLineColor;
-    
-    // draw line
-    this._upper.lineStyle(1,lineColor[0],lineColor[1]);
-    for(var x=0;x<=this._xCount;x++){
-        var pos = this.innerBlockPosition(x,-1);
-        this._upper.moveTo(pos.x,pos.y);
-        this._upper.lineTo(pos.x,0);
-    }    
-    for(var y=-1;y<this._yCount;y++){
-        var pos = this.innerBlockPosition(0,y);
-        this._upper.moveTo(pos.x,pos.y);
-        this._upper.lineTo(this._width,pos.y);
-    }
-*/
+    this._upperX = x;
+    this._upperY = y;
+    this._upperPattern = pattern;
     for(var i=0;i<pattern.length;i++){
         var patt = pattern[i];
         var tx = x+patt.x, ty = y+patt.y;
         this.drawUpperBlock(tx,ty,patt.type,valid);
     }
+}
+GameTable.prototype.redrawUpperStairs = function(){ 
+    if(!this._upperPattern) return;
+    var x = this._upperX, y = this._upperY;
+    var pattern = this._upperPattern;
+    var valid = this.stairsAddable(x,y,pattern);
+    this.drawUpperStairs(x,y,pattern,valid);
+}
+GameTable.prototype.clearUpperStairs = function(){
+    this._upperPattern = undefined;
 }
 
 GameTable.prototype.getInnerPosition = function(x,y){ 
@@ -307,8 +309,11 @@ GameTable.prototype.onDragEnd = function(event){
                 stairs.getPattern());
         }
         this._upper.clear();
+        this.clearUpperStairs();
         Game.clearDraggingStairs(success.valid);
+        return success.valid;
     }
+    return false;
 }
 GameTable.prototype.onDragging = function(event,stairs){
     var data = event.data.global;
@@ -499,6 +504,10 @@ Human.prototype.initialize = function(pic) {
     this.visible = false;
     this._jumpFreq = Game.Setting.InitJumpFreq;
     this._jumpSpd = Game.Setting.InitJumpSpeed;
+
+    if(Game.Newer) this._jumpFreq*=Game.Setting.NewerSpeedDownRate;
+    this._pause = Game.Newer;
+
     this._statusCount = 0;
     this._status = 0; // 0: idle, 1: jump
     this._direction = 1; // 0: left, 1: right
@@ -591,6 +600,7 @@ Human.prototype.updateScoreAddDisplays = function() {
 };
 
 Human.prototype.updateStatus = function() {
+    if(this._pause) return;
     if(!this._gameTable) return;
     
     if(this.isJumpping()) this._statusCount = 0;
@@ -653,6 +663,7 @@ SelectList.prototype.initialize = function() {
     PIXI.Graphics.call(this);    
 
     this.interactive = true;
+    this._firstTurn = true;
 
     this.initDataMembers();
     this.createStairsDisplays();
@@ -675,6 +686,10 @@ SelectList.prototype.setData = function(id,stairs) {
 };
 SelectList.prototype.clearData = function(id) {
     this._data[id] = [];
+};
+SelectList.prototype.refreshData = function(id,stairs) {
+    this.setData(id,stairs);
+    this._stairsDisplays[id].setPattern(stairs);
 };
 
 SelectList.prototype.createStairsDisplays = function() {
@@ -717,7 +732,9 @@ SelectList.prototype.drawBackground = function() {
 };
 SelectList.prototype.getRandomStairs = function(){
     var set = Game.Setting.StairsSet;
-    var index = Math.floor(Math.random()*set.length);
+    var max = Game._tableSprite.floor()>15 ? 
+        set.length : set.length-1;
+    var index = Math.floor(Math.random()*max);
     return set[index];
 }
 
@@ -751,14 +768,20 @@ SelectList.prototype.updateStairsDisplays = function(){
     }
 }
 SelectList.prototype.updateStairsData = function(){ 
-    for(var i=0;i<this._data.length;i++){
-        var data = this._data[i];
-        if(data.length<=0) {
-            var stairs = this.getRandomStairs();
-            this.setData(i,stairs);
-            this._stairsDisplays[i].setPattern(stairs);
+    if(Game.Newer && this._firstTurn) {
+        var set = Game.Setting.StairsSet;
+        this.refreshData(0,set[2]);
+        this.refreshData(1,set[0]);
+        this.refreshData(2,set[5]);
+        this._firstTurn = false;
+    }else
+        for(var i=0;i<this._data.length;i++){
+            var data = this._data[i];
+            if(data.length<=0) {
+                var stairs = this.getRandomStairs();
+                this.refreshData(i,stairs);
+            }
         }
-    }
 }
 
 SelectList.prototype.updateSelectListSize = function(){ 
@@ -798,6 +821,7 @@ SelectList.prototype.getInnerPosition = function(x,y){
     return Math.floor(x/w);
 }
 SelectList.prototype.pointerdown = function(event){ 
+    if(!Game.insidePointerRect(event)) return;
     var data = event.data.global;
     var pos = this.position; 
     var deltaX = data.x-pos.x;
@@ -940,6 +964,7 @@ StairsDisplay.prototype.sizeChanged = function(){
 
 
 StairsDisplay.prototype.pointerdown = function(event){ 
+    if(!Game.insidePointerRect(event)) return;
     this.beforeDrag(event);
     this.onDragStart(event);
 }
@@ -974,3 +999,225 @@ StairsDisplay.prototype.onDragEnd = function(success) {
         this.parent.clearData(this._index);
 }
 
+
+function NewerGuide() {
+    this.initialize.apply(this, arguments);
+}
+
+NewerGuide.prototype = Object.create(PIXI.Container.prototype);
+NewerGuide.prototype.constructor = NewerGuide;
+
+NewerGuide.prototype.initialize = function() {
+    PIXI.Container.call(this); 
+
+    this.interactive = true;
+
+    this._waiting = false;
+    this._count = 0;
+    this._status = 0;
+    this.createSprites();
+};
+NewerGuide.prototype.createSprites = function() {
+    this.createBackground();
+    this.createTextSprite();
+    this.createArrowSprite();
+    this.clearArrow();
+    this.clearText();
+    this.clearPointerRect();
+};
+NewerGuide.prototype.createBackground = function() {
+    this._background = new PIXI.Graphics();
+    this.addChild(this._background);
+};
+NewerGuide.prototype.createTextSprite = function() {
+    this._textSprite = new PIXI.Text('',Game.Setting.GuideTextStyle);
+    this._textSprite.anchor = {x:0.5,y:0.5};
+    this.addChild(this._textSprite);
+};
+NewerGuide.prototype.createArrowSprite = function() {
+    var texture = new PIXI.Texture.fromImage(Game.Setting.GuideArrowPic);
+    this._arrowSprite = new PIXI.Sprite(texture);
+    this._arrowSprite.anchor = {x:0.5,y:0.5};
+    this.addChild(this._arrowSprite);
+};
+NewerGuide.prototype.update = function() {
+    if(!this.visible) return;
+    this.updateSize();
+    this.updateStatus();
+    if(this._arrowSprite.visible) 
+        this.updateArrowAni();
+};
+NewerGuide.prototype.updateSize = function() {
+    this._width = Game._width;
+    this._height = Game._height;
+};
+NewerGuide.prototype.updateStatus = function() {
+    if(!this._waiting){
+        switch(this._status){
+            case 0:
+            var obj = Game._selectList;
+            var x = obj.x, y = obj.y;
+            var w = obj.displayWidth();
+            var h = obj.displayHeight();
+            this.setupPointerRect(x,y,w,h);
+            this.setupArrow(x+w,y+h/2,false);
+            this.setupText(x+w,y+h,'长按选中楼梯\n拖动其到下方');
+            break;
+            case 1:
+            var obj = Game._tableSprite;
+            var x = obj.x, y = obj.y;
+            var rPos = obj.innerBlockPosition(8,0);
+            var tPos = obj.innerBlockPosition(3,5);
+            x += tPos.x; y += tPos.y;
+            var w = rPos.x-tPos.x;
+            var h = rPos.y-tPos.y;
+            this.setupPointerRect(x,y,w,h);
+            this.setupArrow(x+w,y+h/2,false);
+            this.setupText(x+w/2,y-64,'拖动楼梯\n使得两白色方块重合\n方块变色即已重合');
+            break;
+            case 2:
+            var obj = Game._selectList;
+            var w = obj.displayWidth();
+            var h = obj.displayHeight();
+            var x = obj.x+w*2, y = obj.y;
+            this.setupPointerRect(x,y,w,h);
+            this.setupArrow(x,y+h/2,true);
+            this.setupText(x,y+h,'继续选择楼梯\n引导人物回到中间位置');
+            break;
+            case 3:
+            var obj = Game._tableSprite;
+            var x = obj.x, y = obj.y;
+            var rPos = obj.innerBlockPosition(12,4);
+            var tPos = obj.innerBlockPosition(7,9);
+            x += tPos.x; y += tPos.y;
+            var w = rPos.x-tPos.x;
+            var h = rPos.y-tPos.y;
+            this.setupPointerRect(x,y,w,h);
+            this.setupArrow(x,y+h/2,true);
+            this.setupText(x,y-64,'两个白色方块重合即可接上');
+            break;
+            case 4:
+            var obj = Game._selectList;
+            var w = obj.displayWidth();
+            var h = obj.displayHeight();
+            var x = obj.x+w, y = obj.y;
+            this.setupPointerRect(x,y,w,h);
+            this.setupArrow(x,y+h/2,true);
+            this.setupText(x+w/2,y+h+12,'继续选择楼梯\n引导人物往上爬');
+            break;
+            case 5:
+            var obj = Game._tableSprite;
+            var x = obj.x, y = obj.y;
+            var w = obj._width;
+            this.clearPointerRect();
+            this.clearArrow();
+            this.setupText(x+w/2,y-12,'选择合适位置接上楼梯');
+            break;
+            case 6: 
+            this.clearText();
+            setCookie('new',true);
+            Game.Newer = false;
+            this.visible = false;
+            Game._tableSprite._human._jumpFreq/=Game.Setting.NewerSpeedDownRate;
+            break;
+        }
+        this._waiting = true;
+    }else{
+        if((this._status==1 || this._status==3 || this._status==5)
+             && !Game.getDraggingStairs()){
+            this._status--; this._waiting = false;
+        }
+    }
+};
+NewerGuide.prototype.updateArrowAni = function() {
+    if(this._count<10)
+        this._arrowSprite.x += this._arrowSprite.scale.x*1.5;
+    else if(this._count<20)
+        this._arrowSprite.x -= this._arrowSprite.scale.x*1.5;
+    else this._count=-1;
+    this._count++;
+};
+NewerGuide.prototype.setupArrow = function(x,y,dir) {
+    // dir : true => right   false => left
+    this._arrowSprite.visible = true;
+    this._arrowSprite.x = x;
+    this._arrowSprite.y = y;
+    this._arrowSprite.scale.x = dir ? 1 : -1;
+};
+NewerGuide.prototype.clearArrow = function() {
+    this._arrowSprite.visible = false;
+};
+NewerGuide.prototype.setupText = function(x,y,text) {
+    // dir : true => right   false => left
+    this._textSprite.visible = true;
+    this._textSprite.x = x;
+    this._textSprite.y = y;
+    this._textSprite.text = text;
+};
+NewerGuide.prototype.clearText = function(x,y,text) {
+    // dir : true => right   false => left
+    this._textSprite.visible = false;
+    this._textSprite.text = '';
+};
+NewerGuide.prototype.setupPointerRect = function(x,y,width,height) {
+    this.drawBackground(x,y,width,height);
+    this._pointerRect = new PIXI.Rectangle(x,y,width,height);
+};
+NewerGuide.prototype.clearPointerRect = function() {
+    this.clearBackground();
+    this._pointerRect = undefined;
+    var hlColor = Game.Setting.GuideHighlightColor;
+    this._background.beginFill(hlColor[0],hlColor[1]);
+    this._background.drawRect(0,0,this._width,this._height);    
+    this._background.endFill();
+};
+NewerGuide.prototype.drawBackground = function(x,y,width,height) {
+    this.clearBackground();
+    var hlColor = Game.Setting.GuideHighlightColor;
+    var bgColor = Game.Setting.GuideBackgroundColor;
+    this._background.beginFill(hlColor[0],hlColor[1]);
+    this._background.drawRect(x,y,width,height);
+    this._background.beginFill(bgColor[0],bgColor[1]);
+    this._background.drawRect(0,0,this._width,y);
+    this._background.drawRect(0,y,x,this._height);
+    this._background.drawRect(x,y+height,this._width,this._height-y-height);
+    this._background.drawRect(x+width,y,this._width-x-width,height);
+    this._background.endFill();
+};
+NewerGuide.prototype.clearBackground = function() {
+    this._background.clear();
+};
+NewerGuide.prototype.insidePointerRect = function(event) {
+    if(!this._pointerRect) return true;
+    var x = event.data.global.x;
+    var y = event.data.global.y;
+    return this._pointerRect.contains(x,y);
+};
+NewerGuide.prototype.pointerdown = function(event){ 
+    if(!Game.insidePointerRect(event)) return;
+    if(this._status==0){
+        Game._selectList._stairsDisplays[0].pointerdown(event);
+        this._waiting = false;
+        this._status++;
+    }
+    if(this._status==2){
+        Game._selectList._stairsDisplays[2].pointerdown(event);
+        this._waiting = false;
+        this._status++;
+    }
+    if(this._status==4){
+        Game._selectList._stairsDisplays[1].pointerdown(event);
+        this._waiting = false;
+        this._status++;
+    }
+}
+NewerGuide.prototype.pointerup = function(event){ 
+    //if(!Game.insidePointerRect(event)) return;
+    if(this._status==1 || this._status==3 || this._status==5){
+        if(Game._tableSprite.pointerup(event)){
+            Game._tableSprite._human._pause = false;
+            this._waiting = false;
+            this._status++;
+        }
+    }    
+}
