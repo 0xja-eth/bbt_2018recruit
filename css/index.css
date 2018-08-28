@@ -1,0 +1,15 @@
+.container{
+	top: 5%;
+}
+.main-btn{
+	line-height: 40px;
+	text-align: center;
+	margin: 0px auto;
+	max-width: 180px;
+}
+#intr, #recr, #quer{
+	border-radius: 8px;
+	background-color: rgba(32, 32, 32, 0.5);
+	color: rgb(255, 216, 4);
+	margin-top: 5%;
+}

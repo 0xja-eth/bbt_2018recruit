@@ -1,0 +1,94 @@
+#container{
+	position: relative;
+	margin: 0 auto;
+}
+#title{
+	text-align: center;
+	font-size: 42px;
+}
+#mainForm{
+	margin: 5% 5%;
+	line-height: 40px;
+	font-size: 18px;
+	border-radius: 8px;
+	background-color: rgb(86,199,199);
+	text-align: left;
+}
+#field{
+	display: flex;
+}
+.selfIntro{
+	resize: none;
+	display: block;
+	width: 99.5%;
+	border-radius: 6px;
+}
+#btn-group{
+	margin-left: 10%;
+   	margin-right: 10%;
+   	padding-left: 2%;
+   	padding-right: 2%;
+   	text-align: center;
+   	height: 44px;
+   	padding-bottom: 14px;
+}
+.primary-btn{
+	background-color: rgb(255, 173, 103);
+	margin: auto 10%;
+	text-align: center;
+	height: 40px;
+	font-size: 20px;
+	border-radius: 8px;
+	border-style: none;
+}
+.primary-btn:active{
+	background-color: rgb(255, 140, 103);
+}
+@media screen and (min-width: 360px) {
+	#key{
+		width: 28%;
+		margin-left: 5px;
+	}
+	.base-input{
+		width: 66%;
+		margin: 6px 0;
+		border-radius: 4px;
+		border-style: none;
+	}
+	#radio{
+		vertical-align: middle;
+		margin-top: 0;
+		font-size: 18px;
+		margin-right: 20%;
+	}
+}
+@media screen and (max-width: 359px) {
+	#key{
+		width: 30%;
+		margin-left: 5px;
+	}
+	.base-input{
+		width: 64%;
+		margin: 6px 0;
+		border-radius: 4px;
+		border-style: none;
+	}
+	#radio{
+		vertical-align: middle;
+		margin-top: 0;
+		font-size: 18px;
+		margin-right: 18%;
+	}
+}
+@media screen and (min-width: 480px){
+	#key{
+		width: 110px;
+		margin-left: 5px;
+	}
+	.base-input{
+		width: 75%;
+		margin: 6px 0;
+		border-radius: 4px;
+		border-style: none;
+	}
+}
