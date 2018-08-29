@@ -13,6 +13,7 @@ function check($data){
       if($data['name'] == $result['name']){
          session_start();
          $_SESSION['id'] = $result['id'];
+         $_SESSION['phone'] = $result['phone'];
          $result['code'] = 0;
          unset($result['id']);
          unset($result['create_time']);
@@ -33,11 +34,15 @@ function revise($data){
       exit;
    }
    $id = $_SESSION['id'];
-   
-   authentication($data);
-   
-   global $link;
 
+   if($data['phone']==$_SESSION['phone'])
+      authentication($data, false);
+   else
+      authentication($data);
+
+   $_SESSION['phone'] = $data['phone'];
+
+   global $link;
    $stmt = $link->prepare("UPDATE applicant SET name=?, sex=?, college=?, grade=?, dorm=?, phone=?, first=?, second=?, 
                            adjust=?, introduction=? WHERE id=?");
    $stmt->bind_param("ssssssssssi", $data['name'], $data['sex'], $data['college'], $data['grade'], $data['dorm'], $data['phone'], 

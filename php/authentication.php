@@ -4,7 +4,7 @@ include_once("check_exist.php");
 include_once("feedback.php");
 
 // 验证信息
-function authentication($data){
+function authentication($data, $factor=true){
    // 验证姓名
    $len = mb_strlen($data['name'], "utf-8");
    if($len < 2 || $len > 15){
@@ -43,10 +43,11 @@ function authentication($data){
       feedback(6, "号码错误");
       exit;
    }
-   if(check_exist($data['phone'])){
-      feedback(6, "号码已经被登记");
-      exit;
-   }
+   if($factor)
+      if(check_exist($data['phone'])){
+         feedback(6, "号码已经被登记");
+         exit;
+      }
 
    // 验证第一,二志愿
    $branch = array("技术部", "视频部", "策划推广部", "人力资源部", "综合管理部", 
