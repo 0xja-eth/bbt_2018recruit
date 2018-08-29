@@ -1,5 +1,6 @@
 <?php
 
+include_once("check_exist.php");
 include_once("feedback.php");
 
 // 验证信息
@@ -31,7 +32,7 @@ function authentication($data){
    }
 
    // 验证宿舍
-   $pattern = "/^[c|C]\d{1,2}-\d{3}$/";
+   $pattern = "/^[c|C]\d{1,2}(东|西)?-\d{3}$/";
    if(!preg_match($pattern, $data['dorm'])){
       feedback(6, "宿舍号不规范");
       exit;
@@ -40,6 +41,10 @@ function authentication($data){
    // 验证号码
    if(strlen($data['phone']) != 11){
       feedback(6, "号码错误");
+      exit;
+   }
+   if(check_exist($data['phone'])){
+      feedback(6, "号码已经被登记");
       exit;
    }
 
