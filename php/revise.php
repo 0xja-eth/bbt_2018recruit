@@ -37,6 +37,7 @@ function revise($data){
    authentication($data);
    
    global $link;
+
    $stmt = $link->prepare("UPDATE applicant SET name=?, sex=?, college=?, grade=?, dorm=?, phone=?, first=?, second=?, 
                            adjust=?, introduction=? WHERE id=?");
    $stmt->bind_param("ssssssssssi", $data['name'], $data['sex'], $data['college'], $data['grade'], $data['dorm'], $data['phone'], 
