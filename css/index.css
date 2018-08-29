@@ -10,6 +10,10 @@
 #intr, #recr, #quer{
 	border-radius: 8px;
 	background-color: rgba(32, 32, 32, 0.5);
-	color: rgb(255, 216, 4);
+	color: white;
 	margin-top: 5%;
+	transition: color 2s;
+}
+#intr:hover, #recr:hover, #quer:hover{
+	color: rgb(255, 216, 4);
 }

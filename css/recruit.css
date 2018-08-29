@@ -44,6 +44,18 @@
 .primary-btn:active{
 	background-color: rgb(255, 140, 103);
 }
+.warning-field{
+	color: #f40;
+	font-style: italic;
+}
+.warning-field input{
+	color: #f40;
+	font-style: italic;
+}
+.warning-field textarea{
+	color: #f40;
+	font-style: italic;
+}
 @media screen and (min-width: 360px) {
 	#key{
 		width: 28%;
