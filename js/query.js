@@ -9,7 +9,7 @@ function htmlEncodeJQ( str ) {
 }  
 
 var phpPath = 'php/revise.php';
-var dromReg = /^[c|C]\d{1,2}-\d{3}$/;
+var dromReg = /^C([1-9]|1[0-9]) *(东|西)? *-? *[1-9][0-9]{2} *$/i;
 var info = {};
 
 var nullTexts = {
@@ -90,12 +90,7 @@ function onQuery(ret) {
 }
 function onEdit(ret) {
 	if(ret.code) showAlert(ret.message);
-	else{
-		fields.name.query.value = fields.name.edit.value;
-		fields.phone.query.value = fields.phone.edit.value;
-		showAlert('修改成功！');
-		onSubmit();
-	}
+	else{showAlert('修改成功！'); showInfo(ret);}
 }
 function hideQueryFields() {
 	for(var key in fields){
