@@ -11,6 +11,7 @@ function authentication($data, $factor=true){
       feedback(6, "名字不规范");
       exit;
    }
+   $data['name'] = htmlspecialchars($data['name'], ENT_QUOTES);
    
    // 验证性别
    if($data['sex'] != "男" && $data['sex'] != "女"){
@@ -24,6 +25,7 @@ function authentication($data, $factor=true){
       feedback(6, "学院错误");
       exit;
    }
+   $data['college'] = htmlspecialchars($data['college'], ENT_QUOTES);
 
    // 验证年级
    if($data['grade'] != "大一" && $data['grade'] != "大二"){
@@ -39,7 +41,7 @@ function authentication($data, $factor=true){
    }
 
    // 验证号码
-   if(strlen($data['phone']) != 11){
+   if(!preg_match("/^1\d{10}$/", $data['phone'])){
       feedback(6, "号码错误");
       exit;
    }
@@ -64,8 +66,11 @@ function authentication($data, $factor=true){
    }
 
    // 验证自我介绍
-   if(mb_strlen($data['introduction'], "utf-8") >50){
+   if(mb_strlen($data['introduction'], "utf-8") >60){
       feedback(6, "自我介绍字数超出限制");
       exit;
    }
+   $data['introduction'] = htmlspecialchars($data['introduction'], ENT_QUOTES);
+
+   return $data;
 }

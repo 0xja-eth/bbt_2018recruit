@@ -36,9 +36,9 @@ function revise($data){
    $id = $_SESSION['id'];
 
    if($data['phone']==$_SESSION['phone'])
-      authentication($data, false);
+      $data = authentication($data, false);
    else
-      authentication($data);
+      $data = authentication($data);
 
    $_SESSION['phone'] = $data['phone'];
 
@@ -48,8 +48,10 @@ function revise($data){
    $stmt->bind_param("ssssssssssi", $data['name'], $data['sex'], $data['college'], $data['grade'], $data['dorm'], $data['phone'], 
       $data['first'], $data['second'], $data['adjust'], $data['introduction'], $id);
    $result = $stmt->execute();
-   if($result)
-      feedback(0, "更新成功");
+   if($result){
+      $data['code'] = 0;
+      echo json_encode($data);
+   }
    else
       feedback(2, "更新失败，请稍后再试");
    $stmt->close();
