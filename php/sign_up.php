@@ -8,7 +8,7 @@ include_once("check_exist.php");
 
 function sign_up($data){
    
-   authentication($data);
+   $data = authentication($data);
 
    global $link;
    $stmt = $link->prepare("INSERT INTO applicant (name, sex, college, grade, dorm, phone, first, second, adjust, introduction)
