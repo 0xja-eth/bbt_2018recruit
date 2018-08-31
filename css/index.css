@@ -1,19 +1,29 @@
+html, body{
+	height: 100%;
+}
+body{
+	background-image: url("../img/mainBg.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	z-index: 1;
+}
 .container{
-	top: 5%;
+	height: 100%;
+	z-index: 10;
 }
-.main-btn{
-	line-height: 40px;
-	text-align: center;
-	margin: 0px auto;
-	max-width: 180px;
+#star{
+	background-image: url("../img/star.png");
+	background-size: 50%;
+	background-repeat: no-repeat;
+	z-index: 10;
+	position: absolute;
+	top: -300px;
+	left: 400px;
+	-webkit-animation: stars 2s infinite;
+	-o-animation: stars 2s infinite;
+	animation: stars 2s infinite;
 }
-#intr, #recr, #quer{
-	border-radius: 8px;
-	background-color: rgba(32, 32, 32, 0.5);
-	color: white;
-	margin-top: 5%;
-	transition: color 2s;
-}
-#intr:hover, #recr:hover, #quer:hover{
-	color: rgb(255, 216, 4);
+@keyframes stars{
+	0%, 50% {top: -300px; left: 400px;}
+	100% {top: 450px; left: -350px;}
 }
