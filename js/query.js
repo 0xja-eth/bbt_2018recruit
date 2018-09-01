@@ -13,27 +13,28 @@ var dromReg = /^C([1-9]|1[0-9]) *(东|西)? *-? *[1-9][0-9]{2} *$/i;
 var info = {};
 
 var nullTexts = {
-	name : '还没输入姓名~',
-	sex : '还没选择性别~',
-	grade : '还没选择年级~',
-	college : '还没选择学院~',
-	dorm : '还没输入宿舍~',
-	phone : '还没输入手机~',
-	first : '还没选择第一志愿~',
-	adjust : '是否服从调剂？',
+	name : '姓名不明',
+	sex : '性别不明',
+	grade : '年级不明',
+	college : '学院不明',
+	dorm : '宿舍不明',
+	phone : '号码不明',
+	first : '志愿不明',
+	adjust : '是否调剂',
 }
 var invalidTexts = {
-	phone : '手机号码格式不正确',
-	dorm : '宿舍格式不正确',
-	second : '两志愿相同！',
+	phone : '格式错误',
+	dorm : '格式错误',
+	second : '两志愿相同',
+	intro : '字数超过上限',
 }
 
 var keys = ['Name','Sex','Grade','College','Dorm','Phone',
 	'First','Second','Adjust','Introduction'];
-var types = ['text','radio','select','select','text','text',
+var types = ['text','radio','radio','select','text','text',
 	'select','select','radio','text'];
 
-var radioValues = { sex: ['男','女'], adjust: ['是','否'] };
+var radioValues = { sex: ['男','女'], grade: ['大一','大二'], adjust: ['是','否'] };
 
 var fields = {};
 
@@ -62,9 +63,12 @@ function onStart(){
 			query : document.getElementById('q'+key),
 			show : document.getElementById('s'+key),
 			edit : document.getElementById('e'+key),
+			invalid : document.getElementById('i'+key),
 			type
 		};
-		field.show.addEventListener('click',onFieldRevise.bind(window,lkey));
+		if(field.query) field.query.addEventListener('click',onFieldReviseClick.bind(window,lkey));
+		if(field.edit) field.edit.addEventListener('click',onFieldReviseClick.bind(window,lkey));
+		if(field.show) field.show.addEventListener('click',onFieldRevise.bind(window,lkey));
 		if(type == 'radio')
 			field.values = [document.getElementById('e'+key+'_1'),
 				document.getElementById('e'+key+'_2')];
@@ -73,13 +77,11 @@ function onStart(){
 }
 function onSubmit () {
 	var valid = validateQuery();
-	if(!valid.valid) showAlert(valid.msg);
-	else $.post(phpPath, valid.data, onQuery, 'json');
+	if(valid.valid) $.post(phpPath, valid.data, onQuery, 'json');
 }
 function onRevise () {
 	var valid = validateRevise();
-	if(!valid.valid) showAlert(valid.msg);
-	else $.post(phpPath, valid.data, onEdit, 'json');
+	if(valid.valid) $.post(phpPath, valid.data, onEdit, 'json');
 }
 function onReturn() {
 	window.location.assign("index.html");
@@ -104,7 +106,8 @@ function setupShowFields() {
 		var ele = field.field;
 		var show = field.show;
 		var edit = field.edit;
-		var val = info[key];
+		var invalid = field.invalid;
+		var val = (info[key]=='' ? '无' : info[key]);
 		if(ele) ele.className = 'field';
 		if(show) {
 			show.className = 'value';
@@ -131,6 +134,7 @@ function setupShowFields() {
 					break;
 			}
 		}
+		if(invalid) invalid.innerHTML = '';
 	}
 }
 function onFieldRevise(key){
@@ -139,6 +143,11 @@ function onFieldRevise(key){
 	var edit = field.edit;
 	if(show) show.className = 'value hidden';
 	if(edit) edit.className = 'input';
+}
+function onFieldReviseClick(key){
+	var field = fields[key];
+	var invalid = field.invalid;
+	invalid.innerHTML = '';
 }
 function showInfo(ret) {
 	info = ret;
@@ -153,8 +162,14 @@ function validateQuery() {
 	var check;
 	var name = fields.name.query.value;
 	var phone = fields.phone.query.value;
-	if(check = checkName(name)) return {valid: false, msg: check};
-	if(check = checkPhone(phone)) return {valid: false, msg: check};
+	if(check = checkName(name)){
+		fields.name.invalid.innerHTML = check;
+		return {valid: false};
+	}
+	if(check = checkPhone(phone)){
+		fields.phone.invalid.innerHTML = check;
+		return {valid: false};
+	}
 
 	return {valid: true, data: {action:'check', name, phone}};
 }
@@ -177,9 +192,13 @@ function validateRevise() {
 						val = radioValues[lkey][i]; break;
 					}
 		}
-		if(check = window['check'+key](val)) return {valid: false, msg: check};
-		data[lkey] = val;
+		if(check = window['check'+key](val)){
+			field.invalid.innerHTML = check;
+			return {valid: false};
+		} 
+		data[lkey] = (val=='选填' ? '' : val);
 	}
+	console.info(data)
 	return {valid: true, data};
 }
 
@@ -219,7 +238,8 @@ function checkAdjust(adjust) {
 	return adjust == '' ? nullTexts.adjust : false;
 }
 function checkIntroduction(intro) {
-	return false;
+	console.info(intro.length);
+	return intro.length > 50 ? invalidTexts.intro : false;
 }
 
 function showAlert(msg) {

@@ -7,7 +7,7 @@
 	<script type="text/javascript" src="./js/libs/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-
+	<div id="page">
 	<div id="centerer">
 	    <div id="alertWindow">	
 	        <div id="alertMsg">Test</div>
@@ -19,31 +19,45 @@
 		<div id="mainForm">
 			<div id="tips">输入名字和手机号查询报名信息</div>
 			<div id="name" class="field">
-				<div class="key">名字*</div>
+				<div class="key">姓名</div>
+				<div id="iName" class="invalid"></div>
 				<input id="qName" type="text" name="name" class="input" placeholder="输入要查询的名字" maxlength="15">
 				<div id="sName" class="value hidden"></div>
 				<input id="eName" type="text" name="name" class="input hidden" placeholder="输入你的大名~" maxlength="15">
 			</div>
 			<div id="sex" class="field hidden">
-				<div class="key">性别*</div>
+				<div class="key">性别</div>
+				<div id="iSex" class="invalid"></div>
 				<div id="sSex" class="value"></div>
         		<div id="eSex" class="input hidden">
-					<div class="radio"><input id="eSex_1" name="sex" type="radio" value="1"/>男</div>
-					<div class="radio"><input id="eSex_2" name="sex" type="radio" value="2"/>女</div>
+					<div class="radio"><input id="eSex_1" name="sex" type="radio" value="1"/><label for="eSex_1"></label><span>男</span></div>
+					<div class="radio"><input id="eSex_2" name="sex" type="radio" value="2"/><label for="eSex_2"></label><span>女</span></div>
 				</div>
 				<!--<input type="radio" id="female" value="2" class="radio">-->
 			</div>
 			<div id="grade" class="field hidden">
-				<div class="key">年级*</div>
+				<div class="key">年级</div>
+				<div id="iGrade" class="invalid"></div>
+				<div id="sGrade" class="value"></div>
+        		<div id="eGrade" name="grade" class="input hidden">
+					<div class="radio"><input id="eGrade_1" name="grade" type="radio" value="1"/><label for="eGrade_1"></label><span>大一</span></div>
+					<div class="radio"><input id="eGrade_2" name="grade" type="radio" value="2"/><label for="eGrade_2"></label><span>大二</span></div>
+				</div>
+				<!--<input type="radio" id="female" value="2" class="radio">-->
+			</div>
+			<!--div id="grade" class="field hidden">
+				<div class="key">年级</div>
+				<div id="iGrade" class="invalid"></div>
 				<div id="sGrade" class="value"></div>
 				<select id="eGrade" name="grade" class="input hidden">
 					<option value="0" selected="">请选择</option>
 					<option value="1">大一</option>
 					<option value="2">大二</option>
 				</select>
-			</div>
+			</div-->
 			<div id="college" class="field hidden">
-				<div class="key">学院*</div>
+				<div class="key">学院</div>
+				<div id="iCollege" class="invalid"></div>
 				<div id="sCollege" class="value"></div>
 				<select id="eCollege" name="college" class="input hidden">
 					<option value="0" selected>请选择</option>
@@ -78,18 +92,21 @@
 				</select>
 			</div>
 			<div id="dorm" class="field hidden">
-				<div class="key">宿舍*</div>
+				<div class="key">宿舍</div>				
+				<div id="iDorm" class="invalid"></div>
 				<div id="sDorm" class="value"></div>
 				<input id="eDorm" type="text" name="phone" class="input hidden" placeholder="按照C××-×××的格式输入 如 C10-508" maxlength="10">
 			</div>
 			<div id="phone" class="field">
-				<div class="key">手机*</div>
+				<div class="key">手机</div>
+				<div id="iPhone" class="invalid"></div>
 				<input id="qPhone" type="text" name="phone" class="input" placeholder="输入要查询的手机号码" maxlength="11">
 				<div id="sPhone" class="value hidden"></div>
 				<input id="ePhone" type="text" name="phone" class="input hidden" placeholder="输入11位手机号码" maxlength="11">
 			</div>
 			<div id="first" class="field hidden">
-				<div class="key">第一志愿*</div>
+				<div class="key">第一志愿</div>				
+				<div id="iFirst" class="invalid"></div>
 				<div id="sFirst" class="value"></div>
 				<select id="eFirst" name="first" class="input hidden">
 					<option value="0" selected>请选择</option>
@@ -107,6 +124,7 @@
 			</div>
 			<div id="second" class="field hidden">
 				<div class="key">第二志愿</div>
+				<div id="iSecond" class="invalid"></div>
 				<div id="sSecond" class="value"></div>
 				<select id="eSecond" name="second" class="input hidden">
 					<option value="0" selected>选填</option>
@@ -123,18 +141,20 @@
 				</select>
 			</div>			
 			<div id="adjust" class="field hidden">
-				<div class="key">服从调剂*</div>
+				<div class="key">服从调剂</div>
+				<div id="iAdjust" class="invalid"></div>
 				<div id="sAdjust" class="value"></div>
         		<div id="eAdjust" class="input hidden">
-					<div class="radio"><input id="eAdjust_1" name="adjust" type="radio" value="1"/>是</div>
-					<div class="radio"><input id="eAdjust_2" name="adjust" type="radio" value="2"/>否</div>
+					<div class="radio"><input id="eAdjust_1" name="adjust" type="radio" value="1"/><label for="eAdjust_1"></label><span>是</span></div>
+					<div class="radio"><input id="eAdjust_2" name="adjust" type="radio" value="2"/><label for="eAdjust_2"></label><span>否</span></div>
 				</div>
 				<!--<input type="radio" id="female" value="2" class="radio">-->
 			</div>
 			<div id="introduction" class="field hidden">
-				<div class="key">自我介绍*</div>
+				<div id="introductionKey" class="key">个人简介（选填）</div><div id="iIntroduction" class="invalid"></div>
+				<br>
 				<div id="sIntroduction" class="value"></div>
-				<textarea id="eIntroduction" class="input hidden" placeholder="介绍一下你自己~" rows="6" autofocus></textarea>
+				<textarea id="eIntroduction" class="input hidden" placeholder="介绍一下你自己~限50字哦~" rows="6" autofocus></textarea>
 			</div>
 			<div id="status" class="field hidden">
 				<div class="key">报名状态</div>
@@ -146,6 +166,7 @@
 			<button id="revise" class="primary-btn hidden">提交修改</button>
 			<button id="rtn" class="primary-btn">返回主页</button>
 		</div>
+	</div>
 	</div>
 </body>
 <script type="text/javascript" src="./js/query.js"></script>

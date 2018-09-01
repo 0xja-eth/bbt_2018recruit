@@ -1,6 +1,6 @@
-$("#submit").click(function () {
-	handleSubmit();
-})
+var phpPath = "php/sign_up.php";
+
+$("#submit").click(handleSubmit);
 $("#rtn").click(function() {
 	window.location.assign("index.html");
 });
@@ -19,9 +19,14 @@ function handleSubmit() {
 		var form = handleSerialize(ary);
 		if(form){
 			$.ajax({
-				url: '#',
+				url: phpPath,
 				type: 'POST',
-				dataType: 'json',
+				/*
+				contentType:undefined,
+                mimeType:"multipart/form-data",
+                success:function(data){
+                	console.info(data);
+                },*/
 				data: form,
 			})
 			.done(function() {
@@ -58,12 +63,13 @@ function checkForm() {
 	var dorm = $("input[name='dorm']").val();
 	var tele = $("input[name='phone']").val();
 	var fir = $("select[name='first']").find("option:selected").text();
-	var fval = $("select[name='first']").find("option:selected").val();
+	var fival = $("select[name='first']").find("option:selected").val();
 	var sec = $("select[name='second']").find("option:selected").text();
+	var seval = $("select[name='sec']").find("option:selected").val();
 	var obey = $("input[name='adjust']:checked").val();
 	var intro = $("textarea[name='intro']").val();
 	//这里写太烂了 不想改了 先这样吧
-	var ary = new Array(name, gender, gval, sval, dorm, tele, fval, sec, obey, intro);
+	var ary = new Array(name, gender, gval, sval, dorm, tele, fival, sec, obey, intro);
 	//未填写
 	for(var i = 0; i < ary.length; ++i){
 		if(ary[i] == '' || ary[i] == null || ary[i] == 0){

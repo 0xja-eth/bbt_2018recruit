@@ -6,7 +6,26 @@
 	0% {opacity: 1; transform:scale(1,1);}
 	100% {opacity: 0; transform:scale(0,0); display: none;}
 }
-
+html{
+	font-family: '微软雅黑';
+	margin: 0 0 0 0;
+	width: 100%;
+	height:100%;
+	background-size: cover;
+	background-image: url(../img/queryBackground.png);
+	background-repeat: no-repeat;
+}
+body{
+	margin: 0 0 0 0;
+	width: 100%;
+	height:100%;
+}
+#page{
+	margin: 0 0 0 0;
+	width: 100%;
+	height:100%;
+	overflow: scroll;
+}
 #centerer {
 	z-index: 10;
 	display: none;
@@ -50,55 +69,140 @@
 	margin: 5% 5%;
 	line-height: 40px;
 	font-size: 18px;
-	border-radius: 8px;
-	background-color: rgb(86,199,199);
+	/*font-weight: bold;*/
+	background: none;
 	padding: 6px 6px 6px 6px;
 	text-align: left;
 }
 .field {
-	/*font-weight: bold;*/
+	position: relative;
+	font-weight: bold;
 	height: 32px;
-	font-size: 20px;
+	font-size: 18px;
 	padding-top:8px;
 	margin-top:6px;
-	padding-left:104px; 
-	padding-right:4px; 
+	margin-bottom:16px;
+	padding-left:92px; 
+	padding-right:92px; 
 }
 	.key {
 		display:inline; 
 		float:left;
-		width: 104px;
-		margin-left:-104px; 
+		width: 92px;
+	    height: 32px;
+		line-height: 32px;
+		margin-left:-92px; 
 		margin-top: -4px;
 	}
 	.value {
-    	font-family: '微软雅黑';
-		width:100%;
-		height: 32px;
-		float:right;
+    	/*font-family: '微软雅黑';*/
+		width:auto;
+	    height: 32px;
+		line-height: 32px;
+		margin-top: -4px;
+		margin-left: 4px;
+		margin-right:-92px; 
+		float:left;
 	}
 	.input {
-    	font-family: '微软雅黑';
-		width:100%;
-		height: 32px;
-		float:right;
+    	/*font-family: '微软雅黑';   */
+    	width: 100%;
+	    height: 28px;
+	    float: right;
+	    border-color: black;
+	    border-radius: 14px;
+	    padding-left: 8px;
+	    padding-right: 8px;
+	    margin-right: 8px;
+	    outline: none;
+	}
+	.invalid{
+		color: red;  
+    	width: 92px;
+	    height: 32px;
+		line-height: 32px;
+		font-size: 16px;
+	    float: right;
+		margin-top: -4px;
+		margin-right:-92px; 
 	}
 	.radio{
+		position: relative;
     	float: left;
 	    width: 45%;
+	    height: 32px;
+		line-height: 32px;
 	    margin-right: 5%;
-	}
+		margin-top: -4px;
+	    border-color: black;
+	}        
+		input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+        }
+        label {
+            position: absolute;
+            left: 4px;
+            top: 8px;
+            width: 14px;
+            height: 14px;
+            margin-right: 2px;
+            background-color: white;
+            border-style: solid;
+            border-color: black;
+            border-width: 2px;
+        }
+        /*设置选中的input的样式*/
+        /* + 是兄弟选择器,获取选中后的label元素*/
+        input:checked+label { /*
+            background-color: black;
+            border-style: solid;
+            border-color: white;
+            border-width: 2px;*/
+        }
+        
+        input:checked+label::after {
+		    position: absolute;
+		    content: "";
+		    width: 7px;
+		    height: 14px;
+		    top: -4px;
+		    left: 4px;
+		    border: 3px solid black;
+		    border-top: none;
+		    border-left: none;
+		    transform: rotate(45deg);
+        }
 	#introduction{
 		height: auto;
+		padding-left: 0;
+		padding-right: 0;
 	}
-	#sIntroduction{
-		height: auto;
-		float: none;
-	}
-	#eIntroduction{
-		height: auto;
-		float: none;
-	}
+		#introductionKey {
+			width: auto;
+			margin-left:0; 
+		}
+		#iIntroduction{
+    		width: auto;
+			margin-right:0; 
+		}
+		#sIntroduction{
+			height: auto;
+			width: auto;
+			float: none;
+			/*word-wrap: break-word;*/
+			margin-left:0; 
+			margin-right:0;
+		}
+		#eIntroduction{
+			height: auto;
+			/*width: auto;*/
+			float: none;
+			/*margin-left:-80px; 
+			margin-right:0; */
+			resize: none;
+		}
 
 #btn-group{
 	margin-left: auto;
