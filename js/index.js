@@ -2,10 +2,7 @@ var SEL = SEL || {};
 SEL.blurBar = $("#swipe");
 SEL.swipeBar = $("#swipe");
 SEL.intr = $("#intr");
-<<<<<<< HEAD
 SEL.quer = $("#quer");
-=======
->>>>>>> a3cd67c3b2453b80da699384455f17dc37ea327c
 SEL.recr = $("#recr");
 
 var swiper = new Swiper(".swiper-container",{
@@ -31,7 +28,6 @@ SEL.swipeBar.click(function(event) {
 	adder = 0.8, maxBlur = 250, blur = 50;
 	setTimeout(swipe, 500);
 });
-<<<<<<< HEAD
 
 var bigBlur = "0 1px 75px 2px #ff7ec9";
 SEL.intr.click(function(event) {
@@ -47,19 +43,6 @@ SEL.quer.click(function(event) {
 	window.location.assign("./query.html");
 });
 
-=======
-
-var bigBlur = "0 1px 75px 2px #ff7ec9";
-SEL.intr.click(function(event) {
-	$(this).css("box-shadow", bigBlur);
-	window.location.assign("./introduction.html");
-});
-SEL.recr.click(function(event) {
-	$(this).css("box-shadow", bigBlur);
-	window.location.assign("./recruit.html");
-});
-
->>>>>>> a3cd67c3b2453b80da699384455f17dc37ea327c
 var swipe = function() {
 	swiper.slideNext();
 }
