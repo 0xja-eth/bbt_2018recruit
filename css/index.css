@@ -11,19 +11,68 @@ body{
 	height: 100%;
 	z-index: 10;
 }
-#star{
+#star1{
+	/*
 	background-image: url("../img/star.png");
 	background-size: 50%;
 	background-repeat: no-repeat;
+	background-position: -10px -10px;*/
 	z-index: 10;
 	position: absolute;
-	top: -300px;
-	left: 400px;
-	-webkit-animation: stars 2s infinite;
-	-o-animation: stars 2s infinite;
-	animation: stars 2s infinite;
+	top: -140px;
+	left: 360px;
+	-webkit-animation: stars1 2s infinite;
+	-o-animation: stars1 2s infinite;
+	animation: stars1 2s infinite;
 }
-@keyframes stars{
-	0%, 50% {top: -300px; left: 400px;}
-	100% {top: 450px; left: -350px;}
+#star2{
+	z-index: 10;
+	position: absolute;
+	top: -140px;
+	left: 360px;
+	-webkit-animation: stars2 4s infinite;
+	-o-animation: stars2 4s infinite;
+	animation: stars2 4s infinite;
+}
+@keyframes stars1{
+	0%, 25% {top: -140px; left: 360px;}
+	100% {top: 370px; left: -150px;}
+}
+@keyframes stars2{
+	0%, 37.5% {top: -140px; left: 180px;}
+	62.5%, 100% {top: 190px; left: -150px;}
+}
+.triangle{
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-color: transparent transparent transparent white;
+	border-width: 10px 0 10px 16px;
+	margin: 0;
+	position: relative;
+	top: 15px;
+	left: 25px;
+}
+.buttomBar{
+	width: 175px;
+	height: 50px;
+	border-radius: 30px;
+	margin: 0 auto 54px auto;
+	position: relative;
+	top: 64%;
+	background: -webkit-linear-gradient(left, #ff63b2, #f29c9f); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #ff63b2, #f29c9f); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #ff63b2, #f29c9f); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #ff63b2, #f29c9f);
+}
+.content{
+	display: flex;
+	margin: auto 5px;
+}
+.text{
+	margin: 11px 35px;
+	word-break: keep-all;
+	font-family: "Microsoft Yahei";
+	color: #ffffff;
+	font-size: 21px;
 }
