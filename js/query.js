@@ -111,7 +111,7 @@ function setupShowFields() {
 		if(ele) ele.className = 'field';
 		if(show) {
 			show.className = 'value';
-			show.innerHTML = val;
+			show.innerHTML = val.replace(/\n/g,'<br>');;
 		}
 		if(edit) {
 			var type = field.type;
@@ -198,7 +198,7 @@ function validateRevise() {
 		} 
 		data[lkey] = (val=='选填' ? '' : val);
 	}
-	console.info(data)
+	console.info(data[lkey]);
 	return {valid: true, data};
 }
 
@@ -238,7 +238,6 @@ function checkAdjust(adjust) {
 	return adjust == '' ? nullTexts.adjust : false;
 }
 function checkIntroduction(intro) {
-	console.info(intro.length);
 	return intro.length > 50 ? invalidTexts.intro : false;
 }
 

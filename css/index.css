@@ -91,7 +91,6 @@ body{
     user-select:none;
     text-align:center;
 }
-<<<<<<< HEAD
 #quer{
 	background: -webkit-linear-gradient(left, #ff63b2, #f29c9f); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(right, #ff63b2, #f29c9f); /* Opera 11.1 - 12.0 */
@@ -104,8 +103,6 @@ body{
     user-select:none;
     text-align:center;
 }
-=======
->>>>>>> a3cd67c3b2453b80da699384455f17dc37ea327c
 #intr{
 	background-color: white;
 	height: 40px;
@@ -143,13 +140,10 @@ body{
 	margin: 6px 40px;
 	color: #ffffff;
 }
-<<<<<<< HEAD
 #quer .text{
 	margin: 6px 40px;
 	color: #ffffff;
 }
-=======
->>>>>>> a3cd67c3b2453b80da699384455f17dc37ea327c
 #intr .text{
 	margin: 6px 40px;
 	color: #ff7ec9;
