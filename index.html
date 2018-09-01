@@ -6,16 +6,41 @@
 	<meta charset="utf-8">
 	<!--<link rel="stylesheet" type="text/css" href="./css/index.css" media="screen and (min-width: 360px)">-->
 	<link rel="stylesheet" type="text/css" href="./css/index.css">
+	<link rel="stylesheet" type="text/css" href="./css/swiper-4.3.5.min.css">
 	<script type="text/javascript" src="./js/libs/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="./js/libs/swiper-4.3.5.min.js"></script>
 </head>
 <body>
-	<div class="container">
-		<img src="./img/star.png" id="star1" height="150px" width="150px">
-		<img src="./img/star.png" id="star2" height="100px" width="100px">
-		<div class="buttomBar">
-			<div class="content">
-				<div class="triangle"></div>
-				<div class="text">即刻启程</div>
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide start" id="s">
+				<img src="./img/star.png" id="star1" height="150px" width="150px">
+				<img src="./img/star.png" id="star2" height="100px" width="100px">
+				<div id="charactorField"><img src="./img/charactor.png" height="60px" width="100px" id="charactor"></div>
+				<div class="btnBar" id="swipe">
+					<div class="content">
+						<div class="triangle"></div>
+						<div class="text">即刻启程</div>
+					</div>
+				</div>
+			</div>
+			<div class="swiper-slide next" id="n">
+				<div class="textBar">
+				<p>每一步都在成长</p>
+				<p class="textBar">每一步都有惊喜</p>
+				<p class="textBar">加入百步梯</p>
+				<p class="textBar">让我们陪你走过每一步</p>
+				</div>
+				<div class="btnBar" id="recr">
+					<div class="content">
+						<div class="text">马上报名</div>
+					</div>
+				</div>
+				<div class="btnBar" id="intr">
+					<div class="content">
+						<div class="text">部门介绍</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
