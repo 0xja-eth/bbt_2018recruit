@@ -13,6 +13,7 @@ function check($data){
       if($data['name'] == $result['name']){
          session_start();
          $_SESSION['id'] = $result['id'];
+         $_SESSION['phone'] = $result['phone'];
          $result['code'] = 0;
          unset($result['id']);
          unset($result['create_time']);
@@ -33,17 +34,24 @@ function revise($data){
       exit;
    }
    $id = $_SESSION['id'];
-   
-   authentication($data);
-   
+
+   if($data['phone']==$_SESSION['phone'])
+      $data = authentication($data, false);
+   else
+      $data = authentication($data);
+
+   $_SESSION['phone'] = $data['phone'];
+
    global $link;
    $stmt = $link->prepare("UPDATE applicant SET name=?, sex=?, college=?, grade=?, dorm=?, phone=?, first=?, second=?, 
                            adjust=?, introduction=? WHERE id=?");
    $stmt->bind_param("ssssssssssi", $data['name'], $data['sex'], $data['college'], $data['grade'], $data['dorm'], $data['phone'], 
       $data['first'], $data['second'], $data['adjust'], $data['introduction'], $id);
    $result = $stmt->execute();
-   if($result)
-      feedback(0, "更新成功");
+   if($result){
+      $data['code'] = 0;
+      echo json_encode($data);
+   }
    else
       feedback(2, "更新失败，请稍后再试");
    $stmt->close();

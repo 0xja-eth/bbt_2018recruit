@@ -7,12 +7,8 @@ include_once("authentication.php");
 include_once("check_exist.php");
 
 function sign_up($data){
-   if(check_exist($data['phone'])){
-      feedback(1, "该号码已经登记");
-      exit;
-   }
    
-   authentication($data);
+   $data = authentication($data);
 
    global $link;
    $stmt = $link->prepare("INSERT INTO applicant (name, sex, college, grade, dorm, phone, first, second, adjust, introduction)
