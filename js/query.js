@@ -1,13 +1,3 @@
-function getQueryString(name) { 
-	var reg = new RegExp(name+"=([^ ]+)", "g"); 
-	var text = window.location.search.replace("%20"," ");
-	var r = text.substr(1).match(reg); 
-	if (r) return (RegExp.$1); return null; 
-} 
-function htmlEncodeJQ( str ) {  
-    return $('<span/>').text( str ).html();  
-}  
-
 var phpPath = 'php/revise.php';
 var dromReg = /^C([1-9]|1[0-9]) *(东|西)? *-? *[1-9][0-9]{2} *$/i;
 var info = {};
@@ -211,7 +201,6 @@ function validateRevise() {
 		} 
 		data[lkey] = (val=='选填' ? '' : val);
 	}
-	console.info(data[lkey]);
 	return {valid: true, data};
 }
 
@@ -265,6 +254,7 @@ function showAlert(msg) {
 	alertMsg.innerHTML = msg;
 }
 function hideAlert() {
+	submit.style.boxShadow = '';
 	revise.style.boxShadow = '';
 	alertButton.style.boxShadow = bigBlur;
     alertWindow.style.animationName = 'alertHideAni';
