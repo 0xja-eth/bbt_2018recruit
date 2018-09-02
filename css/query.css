@@ -155,6 +155,7 @@ body{
 	    padding-left: 8px;
 	    padding-right: 8px;
 	    margin-right: 8px;
+		margin-top: -4px;
 	    outline: none;
 	}
 	.invalid{
@@ -176,7 +177,7 @@ body{
 		line-height: 32px;
 		padding-left: 10px;
 	    margin-right: 0;
-		margin-top: -4px;
+		margin-top: -2px;
 	    border-color: black;
 	}        
 		input[type="radio"] {
@@ -187,9 +188,9 @@ body{
         label {
             position: absolute;
             left: 10px;
-            top: 8px;
-            width: 14px;
-            height: 14px;
+            top: 7px;
+            width: 15px;
+            height: 15px;
             margin-right: 4px;
             background-color: white;
             border-style: solid;
