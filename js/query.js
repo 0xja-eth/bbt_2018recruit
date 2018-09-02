@@ -163,7 +163,7 @@ function showInfo(ret) {
 	info = ret;
 	hideQueryFields();
 	setupShowFields();
-	tips.innerHTML = '梯仔找到你的报名信息啦！<br>如有错误直接点击就可以修改哦~'
+	tips.innerHTML = '梯仔找到你的报名信息啦！<br>如有错误直接点击就可修改哦~'
 	tips.style.marginTop = '0';
 	tips.style.marginBottom = '5%';
 

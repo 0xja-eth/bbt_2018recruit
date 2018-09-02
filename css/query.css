@@ -114,6 +114,18 @@ body{
 	padding-left:92px; 
 	padding-right:92px; 
 }
+	#sex{
+		padding-left:92px; 
+		padding-right:0; 
+	}
+	#adjust{
+		padding-left:92px; 
+		padding-right:0; 
+	}
+	#grade{
+		padding-left:92px; 
+		padding-right:0; 
+	}
 	.key {
 		display:inline; 
 		float:left;
@@ -159,10 +171,11 @@ body{
 	.radio{
 		position: relative;
     	float: left;
-	    width: 45%;
+	    width: 40%;
 	    height: 32px;
 		line-height: 32px;
-	    margin-right: 5%;
+		padding-left: 10px;
+	    margin-right: 0;
 		margin-top: -4px;
 	    border-color: black;
 	}        
