@@ -10,12 +10,17 @@
 	<div id="page">
 	<div id="centerer">
 	    <div id="alertWindow">	
-	        <div id="alertMsg">Test</div>
+	    	<img id="alertWindowBg" src="img/alert.png">
+	        <div id="alertMsg"></div>
+			<div class="btnBar" id="alertButton">
+				<div class="content">
+					<div class="text">确认</div>
+				</div>
+			</div>
 	    </div>	
 	</div>
 
 	<div id="container">
-		<div id="title">报名查询</div>
 		<div id="mainForm">
 			<div id="tips">输入名字和手机号查询报名信息</div>
 			<div id="name" class="field">
@@ -161,11 +166,26 @@
 				<div id="sStatus"></div>
 			</div>
 		</div><!--End of mainForm-->
-		<div id="btn-group">
+		<div class="btnBar" id="submit">
+			<div class="buttonContent">
+				<div class="text">查询</div>
+			</div>
+		</div>
+		<div class="btnBar hidden" id="revise">
+			<div class="buttonContent">
+				<div class="text">确认修改</div>
+			</div>
+		</div>
+		<div class="btnBar" id="rtn">
+			<div class="buttonContent">
+				<div class="text">返回</div>
+			</div>
+		</div>
+		<!--div id="btn-group">
 			<button id="submit" class="primary-btn">查询报名</button>
 			<button id="revise" class="primary-btn hidden">提交修改</button>
 			<button id="rtn" class="primary-btn">返回主页</button>
-		</div>
+		</div-->
 	</div>
 	</div>
 </body>

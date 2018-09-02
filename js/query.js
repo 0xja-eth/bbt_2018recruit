@@ -12,6 +12,8 @@ var phpPath = 'php/revise.php';
 var dromReg = /^C([1-9]|1[0-9]) *(东|西)? *-? *[1-9][0-9]{2} *$/i;
 var info = {};
 
+var bigBlur = "0 1px 75px 2px #ff7ec9";
+
 var nullTexts = {
 	name : '姓名不明',
 	sex : '性别不明',
@@ -40,6 +42,7 @@ var fields = {};
 
 var centerer = document.getElementById('centerer');
 var alertMsg = document.getElementById('alertMsg');
+var alertButton = document.getElementById('alertButton');
 
 var tips = document.getElementById('tips');
 
@@ -51,7 +54,7 @@ submit.addEventListener('click', onSubmit);
 revise.addEventListener('click', onRevise);
 back.addEventListener('click', onReturn);
 
-centerer.addEventListener('click', hideAlert);
+alertButton.addEventListener('click', hideAlert);
 
 function onStart(){
 	for(var i=0;i<keys.length;i++){
@@ -77,13 +80,20 @@ function onStart(){
 }
 function onSubmit () {
 	var valid = validateQuery();
-	if(valid.valid) $.post(phpPath, valid.data, onQuery, 'json');
+	if(valid.valid){
+		$.post(phpPath, valid.data, onQuery, 'json');
+		submit.style.boxShadow = bigBlur;
+	}
 }
 function onRevise () {
 	var valid = validateRevise();
-	if(valid.valid) $.post(phpPath, valid.data, onEdit, 'json');
+	if(valid.valid){
+		$.post(phpPath, valid.data, onEdit, 'json');
+		revise.style.boxShadow = bigBlur;
+	}
 }
 function onReturn() {
+	back.style.boxShadow = bigBlur;
 	window.location.assign("index.html");
 }
 
@@ -92,7 +102,7 @@ function onQuery(ret) {
 }
 function onEdit(ret) {
 	if(ret.code) showAlert(ret.message);
-	else{showAlert('修改成功！'); showInfo(ret);}
+	else{showAlert('修改成功'); showInfo(ret);}
 }
 function hideQueryFields() {
 	for(var key in fields){
@@ -151,11 +161,14 @@ function onFieldReviseClick(key){
 }
 function showInfo(ret) {
 	info = ret;
-	tips.style.display = 'none';
 	hideQueryFields();
 	setupShowFields();
-	submit.className = 'primary-btn hidden';
-	revise.className = 'primary-btn';
+	tips.innerHTML = '梯仔找到你的报名信息啦！<br>如有错误直接点击就可以修改哦~'
+	tips.style.marginTop = '0';
+	tips.style.marginBottom = '5%';
+
+	submit.className = 'btnBar hidden';
+	revise.className = 'btnBar';
 }
 
 function validateQuery() {
@@ -241,7 +254,8 @@ function checkIntroduction(intro) {
 	return intro.length > 50 ? invalidTexts.intro : false;
 }
 
-function showAlert(msg) {
+function showAlert(msg) {	
+	alertButton.style.boxShadow = '';
 	centerer.style.display = 'block';
     alertWindow.style.animationName = 'alertShowAni';
     alertWindow.style.animationDuration = '0.2s';
@@ -251,6 +265,8 @@ function showAlert(msg) {
 	alertMsg.innerHTML = msg;
 }
 function hideAlert() {
+	revise.style.boxShadow = '';
+	alertButton.style.boxShadow = bigBlur;
     alertWindow.style.animationName = 'alertHideAni';
     alertWindow.style.animationDuration = '0.2s';
     alertWindow.style.animationTimingFunction = 'linear';
