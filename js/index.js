@@ -29,17 +29,13 @@ SEL.swipeBar.click(function(event) {
 	setTimeout(swipe, 500);
 });
 
-var bigBlur = "0 1px 75px 2px #ff7ec9";
 SEL.intr.click(function(event) {
-	$(this).css("box-shadow", bigBlur);
 	window.location.assign("./introduction.html");
 });
 SEL.recr.click(function(event) {
-	$(this).css("box-shadow", bigBlur);
 	window.location.assign("./recruit.html");
 });
 SEL.quer.click(function(event) {
-	$(this).css("box-shadow", bigBlur);
 	window.location.assign("./query.html");
 });
 

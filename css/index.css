@@ -1,6 +1,7 @@
 html, body{
 	height: 100%;
 	overflow: hidden;
+	margin: 0;
 }
 body{
 	z-index: 1;
@@ -51,8 +52,8 @@ body{
 	62.5%, 100% {top: 190px; left: -150px;}
 }
 #charactorField{
-	position: absolute;
-	top: 58.5%;
+	position: relative;
+	margin-top: 100%;
 	width: 100%;
 	display: inline-flex;
 }
@@ -70,7 +71,6 @@ body{
     background: -o-linear-gradient(right, #ff63b2, #f29c9f); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right, #ff63b2, #f29c9f); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, #ff63b2, #f29c9f);
-	top: 67%;
 	box-shadow: 0 1px 8px 2px #ff63b2;
 	margin: 0 auto 54px auto;
 	text-decoration:none;
@@ -132,17 +132,29 @@ body{
 	font-family: "Microsoft Yahei";
 	font-size: 21px;
 }
+#swipe:active{
+	box-shadow: 0 1px 75px 2px #ff7ec9;
+}
 #swipe .text{
 	margin: 11px 35px;
 	color: #ffffff;
+}
+#recr:active{
+	box-shadow: 0 1px 75px 2px #ff7ec9;
 }
 #recr .text{
 	margin: 6px 40px;
 	color: #ffffff;
 }
+#quer:active{
+	box-shadow: 0 1px 75px 2px #ff7ec9;
+}
 #quer .text{
 	margin: 6px 40px;
 	color: #ffffff;
+}
+#intr:active{
+	box-shadow: 0 1px 75px 2px #ff7ec9;
 }
 #intr .text{
 	margin: 6px 40px;
@@ -158,6 +170,7 @@ body{
 	text-align: center;
 	line-height: 30px;
 	margin: 8px auto;
+	font-weight: bold;
 	font-family: "Microsoft Yahei";
 }
 /*

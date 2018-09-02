@@ -1,36 +1,66 @@
 <html>
 <head>
-	<title>报名界面</title>
+	<title>百步梯报名表</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="./css/recruit.css">
 	<script type="text/javascript" src="./js/libs/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-	<div id="container">
-		<div id="title">百步梯报名表</div>
-		<div id="mainForm">
-			<div id="field">
-				<div id="key">名字*</div>
-				<input type="text" name="name" class="base-input" placeholder="输入你的大名~" maxlength="15">
+	<div id="page">
+	<div id="centerer">
+	    <div id="alertWindow">	
+	    	<img id="alertWindowBg" src="img/alert.png">
+	        <div id="alertMsg"></div>
+	        <div id="locatingMsg"></div>
+			<div class="btnBar" id="alertButton">
+				<div class="content">
+					<div class="text">确认</div>
+				</div>
 			</div>
-			<div id="field">
-				<div id="key">性别*</div>
-				<div id="radio"><input name="sex" type="radio" value="1" checked/>男</div>
-				<div id="radio"><input name="sex" type="radio" value="2"/>女</div>
+	    </div>	
+	</div>
+
+	<div id="container">
+		<div id="mainForm">
+			<div id="tips">百步梯招新报名表</div>
+			<div id="name" class="field">
+				<div class="key">姓名</div>
+				<div id="iName" class="invalid"></div>
+				<input id="eName" type="text" name="name" class="input" placeholder="输入你的大名~" maxlength="15">
+			</div>
+			<div id="sex" class="field">
+				<div class="key">性别</div>
+				<!--<div id="iSex" class="invalid"></div>-->
+        		<div id="eSex" class="input">
+					<div class="radio"><input id="eSex_1" name="sex" type="radio" value="1" checked/><label for="eSex_1"></label><span>男</span></div>
+					<div class="radio"><input id="eSex_2" name="sex" type="radio" value="2"/><label for="eSex_2"></label><span>女</span></div>
+				</div>
 				<!--<input type="radio" id="female" value="2" class="radio">-->
 			</div>
-			<div id="field">
-				<div id="key">年级</div>
-				<select name="grade" class="base-input">
+			<div id="grade" class="field">
+				<div class="key">年级</div>
+				<!--<div id="iGrade" class="invalid"></div>-->
+        		<div id="eGrade" name="grade" class="input">
+					<div class="radio"><input id="eGrade_1" name="grade" type="radio" value="1" checked/><label for="eGrade_1"></label><span>大一</span></div>
+					<div class="radio"><input id="eGrade_2" name="grade" type="radio" value="2"/><label for="eGrade_2"></label><span>大二</span></div>
+				</div>
+				<!--<input type="radio" id="female" value="2" class="radio">-->
+			</div>
+			<!--div id="grade" class="field hidden">
+				<div class="key">年级</div>
+				<div id="iGrade" class="invalid"></div>
+				<div id="sGrade" class="value"></div>
+				<select id="eGrade" name="grade" class="input hidden">
 					<option value="0" selected="">请选择</option>
 					<option value="1">大一</option>
 					<option value="2">大二</option>
 				</select>
-			</div>
-			<div id="field">
-				<div id="key">学院*</div>
-				<select name="college" class="base-input">
+			</div-->
+			<div id="college" class="field">
+				<div class="key">学院</div>
+				<div id="iCollege" class="invalid"></div>
+				<select id="eCollege" name="college" class="input">
 					<option value="0" selected>请选择</option>
                 	<option value="1">机械与汽车工程学院</option>
                 	<option value="2">建筑学院</option>
@@ -62,17 +92,21 @@
                 	<option value="28">国际教育学院</option>
 				</select>
 			</div>
-			<div id="field" class="dorm">
-				<div id="key">宿舍*</div>
-				<input type="text" name="dorm" class="base-input" placeholder="按照C××-×××的格式输入 如 C10-508" maxlength="15">
+			<div id="dorm" class="field">
+				<div class="key">宿舍</div>				
+				<div id="iDorm" class="invalid"></div>
+				<div id="sDorm" class="value"></div>
+				<input id="eDorm" type="text" name="phone" class="input" placeholder="按照C××-×××的格式输入 如 C10-508" maxlength="10">
 			</div>
-			<div id="field" class="phone">
-				<div id="key">手机*</div>
-				<input type="text" name="phone" class="base-input" placeholder="输入11位手机号码" maxlength="15">
+			<div id="phone" class="field">
+				<div class="key">手机</div>
+				<div id="iPhone" class="invalid"></div>
+				<input id="ePhone" type="text" name="phone" class="input" placeholder="输入11位手机号码" maxlength="11">
 			</div>
-			<div id="field">
-				<div id="key">第一志愿*</div>
-				<select name="first" class="base-input">
+			<div id="first" class="field">
+				<div class="key">第一志愿</div>				
+				<div id="iFirst" class="invalid"></div>
+				<select id="eFirst" name="first" class="input">
 					<option value="0" selected>请选择</option>
         			<option value="1">编辑部</option>
         			<option value="2">综合管理部</option>
@@ -86,9 +120,11 @@
         			<option value="10">视觉设计部</option>
 				</select>
 			</div>
-			<div id="field">
-				<div id="key">第二志愿</div>
-				<select name="second" class="base-input">
+			<div id="second" class="field">
+				<div class="key">第二志愿</div>
+				<div id="iSecond" class="invalid"></div>
+				<div id="sSecond" class="value"></div>
+				<select id="eSecond" name="second" class="input">
 					<option value="0" selected>选填</option>
         			<option value="1">编辑部</option>
         			<option value="2">综合管理部</option>
@@ -101,24 +137,49 @@
         			<option value="9">视频部</option>
         			<option value="10">视觉设计部</option>
 				</select>
-			</div>
-			<div id="field">
-				<div id="key">服从调剂*</div>
-				<div id="radio"><input name="adjust" type="radio" value="1" checked/>是</div>
-				<div id="radio"><input name="adjust" type="radio" value="2"/>否</div>
+			</div>			
+			<div id="adjust" class="field">
+				<div class="key">服从调剂</div>
+				<!--<div id="iAdjust" class="invalid"></div>-->
+				<div id="sAdjust" class="value"></div>
+        		<div id="eAdjust" class="input">
+					<div class="radio"><input id="eAdjust_1" name="adjust" type="radio" value="1" checked/><label for="eAdjust_1"></label><span>是</span></div>
+					<div class="radio"><input id="eAdjust_2" name="adjust" type="radio" value="2"/><label for="eAdjust_2"></label><span>否</span></div>
+				</div>
 				<!--<input type="radio" id="female" value="2" class="radio">-->
 			</div>
-			<div id="field" class="intro">
-				<div id="key">自我介绍*</div>
-				<div class="base-input">
-					<textarea name="intro" placeholder="介绍一下你自己~" rows="6" autofocus class="selfIntro"></textarea>
-				</div>
+			<div id="introduction" class="field">
+				<div id="introductionKey" class="key">个人简介（选填）</div><div id="iIntroduction" class="invalid"></div>
+				<br>
+				<div id="sIntroduction" class="value"></div>
+				<textarea id="eIntroduction" class="input" placeholder="介绍一下你自己~限50字哦~" rows="6"></textarea>
 			</div>
+			<!--<div id="status" class="field">
+				<div class="key">报名状态</div>
+				<div id="sStatus"></div>
+			</div>-->
 		</div><!--End of mainForm-->
-		<div id="btn-group">
-			<button id="submit" class="primary-btn">提交</button>
-			<button id="rtn" class="primary-btn">返回</button>
+		<!--<div class="btnBar hidden" id="submit">
+			<div class="buttonContent">
+				<div class="text">查询</div>
+			</div>
+		</div>-->
+		<div class="btnBar" id="submit">
+			<div class="buttonContent">
+				<div class="text">提交</div>
+			</div>
 		</div>
+		<div class="btnBar" id="rtn">
+			<div class="buttonContent">
+				<div class="text">返回</div>
+			</div>
+		</div>
+		<!--div id="btn-group">
+			<button id="submit" class="primary-btn">查询报名</button>
+			<button id="revise" class="primary-btn hidden">提交修改</button>
+			<button id="rtn" class="primary-btn">返回主页</button>
+		</div-->
+	</div>
 	</div>
 </body>
 <script type="text/javascript" src="./js/recruit.js"></script>
