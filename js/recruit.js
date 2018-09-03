@@ -1,15 +1,6 @@
-function getQueryString(name) { 
-	var reg = new RegExp(name+"=([^ ]+)", "g"); 
-	var text = window.location.search.replace("%20"," ");
-	var r = text.substr(1).match(reg); 
-	if (r) return (RegExp.$1); return null; 
-} 
-function htmlEncodeJQ( str ) {  
-    return $('<span/>').text( str ).html();  
-}  
-
 var phpPath = 'php/sign_up.php';
 var dromReg = /^C([1-9]|1[0-9]) *(东|西)? *-? *[1-9][0-9]{2} *$/i;
+var phoneReg = /^1[0-9]{10}$/;
 var info = {};
 
 var bigBlur = "0 1px 75px 2px #ff7ec9";
@@ -83,7 +74,6 @@ function onStart(){
 }
 function onSubmit () {
 	var valid = validateQuery();
-	console.log(valid.data);
 	if(valid.valid){
 		$.post(phpPath, valid.data, onQuery, 'json');//------------------------
 		submit.style.boxShadow = bigBlur;
@@ -220,6 +210,12 @@ function validateQuery() {
 	if(check = checkDorm(dorm)){
 		fields.dorm.invalid.innerHTML = check;
 		return {valid: false};
+	}else{
+		var params = dorm.split(/[ |-]+/);
+		dorm = params[0];
+		if(params[1]=='东'||params[1]=='西') dorm += params[1];
+		else if(params[1] && params[1]!='') dorm+='-'+params[1];
+		if(params[2] && params[2]!='') dorm+='-'+params[2];
 	}
 	if(check = checkPhone(phone)){
 		fields.phone.invalid.innerHTML = check;
@@ -294,7 +290,7 @@ function checkGrade(grade) {
 }
 function checkPhone(phone) {
 	if(phone == '') return nullTexts.phone;
-	if(phone.length != 11 || !Number(phone)) 
+	if(!phone.match(phoneReg))
 		return invalidTexts.phone;
 	return false;
 }

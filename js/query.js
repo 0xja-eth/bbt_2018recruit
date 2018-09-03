@@ -1,5 +1,6 @@
 var phpPath = 'php/revise.php';
 var dromReg = /^C([1-9]|1[0-9]) *(东|西)? *-? *[1-9][0-9]{2} *$/i;
+var phoneReg = /^1[0-9]{10}$/;
 var info = {};
 
 var bigBlur = "0 1px 75px 2px #ff7ec9";
@@ -199,6 +200,13 @@ function validateRevise() {
 			field.invalid.innerHTML = check;
 			return {valid: false};
 		} 
+		if(key=='Dorm'){
+			var params = val.split(/[ |-]+/);
+			val = params[0];
+			if(params[1]=='东'||params[1]=='西') val += params[1];
+			else if(params[1] && params[1]!='') val+='-'+params[1];
+			if(params[2] && params[2]!='') val+='-'+params[2];
+		} 
 		data[lkey] = (val=='选填' ? '' : val);
 	}
 	return {valid: true, data};
@@ -215,7 +223,7 @@ function checkGrade(grade) {
 }
 function checkPhone(phone) {
 	if(phone == '') return nullTexts.phone;
-	if(phone.length != 11 || !Number(phone)) 
+	if(!phone.match(phoneReg))
 		return invalidTexts.phone;
 	return false;
 }
