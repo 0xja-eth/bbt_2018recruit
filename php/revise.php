@@ -6,7 +6,7 @@ include_once("feedback.php");
 include_once("check_exist.php");
 include_once("authentication.php");
 
-
+header('Content-type: applicant/json');
 function check($data){
    $result = check_exist($data['phone']);
    if($result){

@@ -4,7 +4,7 @@ include_once("config.php");
 include_once("conn.php");
 include_once("feedback.php");
 
-
+header('Content-type: applicant/json');
 function check_password($data){
    if($data['password'] == NAME[$data['name']]){
       session_start();
