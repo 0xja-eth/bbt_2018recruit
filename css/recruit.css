@@ -318,6 +318,9 @@ body{
     width: 100%;
     margin: 0 auto;
 }
+select{
+	-webkit-appearance: none;
+}
 /*
 #btn-group{
 	margin-left: auto;
