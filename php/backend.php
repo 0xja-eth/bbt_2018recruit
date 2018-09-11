@@ -4,7 +4,7 @@ include_once("config.php");
 include_once("conn.php");
 include_once("feedback.php");
 
-
+header('Content-type: applicant/json');
 function check_password($data){
    if($data['password'] == NAME[$data['name']]){
       session_start();
@@ -28,8 +28,9 @@ function applicant_value($name){
    
    }
    else{
+      $name .= "%";
 
-      $stmt = $link->prepare("SELECT * FROM applicant WHERE first=?");
+      $stmt = $link->prepare("SELECT * FROM applicant WHERE first LIKE ?");
       $stmt->bind_param("s", $name);
       $stmt->execute();
       $result = $stmt->get_result();
@@ -40,7 +41,7 @@ function applicant_value($name){
       $stmt->close();
 
 
-      $st = $link->prepare("SELECT * FROM applicant WHERE first<>? AND second=?");
+      $st = $link->prepare("SELECT * FROM applicant WHERE first NOT LIKE ? AND second LIKE ?");
       $st->bind_param("ss", $name, $name);
       $st->execute();
       $res = $st->get_result();

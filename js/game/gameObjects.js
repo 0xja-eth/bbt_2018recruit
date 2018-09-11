@@ -920,7 +920,7 @@ StairsDisplay.prototype.calcOriPatternSize = function() {
 StairsDisplay.prototype.drawStairs = function() {
     var pattern = this._stairPattern;
     this.clear();
-    this.drawBackground();
+    /*this.drawBackground();*/
     for(var i=0;i<pattern.length;i++){
         var patt = pattern[i];
         this.drawBlock(patt.x,patt.y,patt.type);

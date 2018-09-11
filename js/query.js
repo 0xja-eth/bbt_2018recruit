@@ -85,7 +85,7 @@ function onRevise () {
 }
 function onReturn() {
 	back.style.boxShadow = bigBlur;
-	window.location.assign("index.html");
+	window.location.replace("main.html");
 }
 
 function onQuery(ret) {

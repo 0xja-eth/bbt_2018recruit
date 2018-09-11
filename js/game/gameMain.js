@@ -28,7 +28,7 @@ Game.Newer = !getCookie('new');
 
 Game.Setting = {
 	// image settings
-	BackgroundImage : 'img/background.png',
+	BackgroundImage : 'img/gameBg.jpg',
 	HumanPic : 'img/human.png',
 	GameOverPic : 'img/gameover.png',
 	GuideArrowPic : 'img/pointer.png',
@@ -53,20 +53,20 @@ Game.Setting = {
 	},
 
 	// color settings
-	SelectListBgColor : [0,0.5],
-	SelectListBgLineColor : [0x008000,0.75],
+	SelectListBgColor : [0,0.4],
+	SelectListBgLineColor : [0x008000,0],
 
-	TableBgColor : [0,0.5],
-	TableBgLineColor : [0x008000,0.75],
+	TableBgColor : [0,0.2],
+	TableBgLineColor : [0x008000,0],
 
 	BlockColor : {
 		'null' : [0,0],
 		'broken' : [0,0.5],
-		'ground' : [0x435B45,1],
+		'ground' : [0xff1493,1],
 		'connection' : [0xffffff,1],
 		'connected' : [0x808080,1],
-		'normal' : [0x80ff80,1],
-		'unjump' : [0x80ff80,1],
+		'normal' : [0xffc0cb,1],
+		'unjump' : [0xffc0cb,1],
 		'special' : [0xffff00,1],
 	},
 
@@ -267,7 +267,7 @@ Game._createGameObjects = function() {
 };
 Game._createBackground = function() {
     var texture = new PIXI.Texture.fromImage(Game.Setting.BackgroundImage);
-    this._background = new PIXI.extras.TilingSprite(texture, this._width, this._height);
+    this._background = new PIXI.Sprite(texture);
     this._stage.addChild(this._background); 
 };
 Game._createScore = function() {
@@ -296,26 +296,26 @@ Game._createGameEnd = function() {
 	this._gameEndInfo = document.createElement('div');
 	this._gameEndInfo.id = 'game_end_info';
 
-	this._resumeGame = document.createElement('div');
-	this._resumeGame.className = 'game_end_button';
-	this._resumeGame.innerHTML = '再玩一局 >';
-	this._resumeGame.addEventListener('click',this.resumeGame.bind(this));
-
 	this._gotoRecruit = document.createElement('div');
 	this._gotoRecruit.className = 'game_end_button';
-	this._gotoRecruit.innerHTML = '马上报名 >';
+	this._gotoRecruit.innerHTML = '前往报名';
 	this._gotoRecruit.addEventListener('click',this.gotoRecruit.bind(this));
 
-	this._needGuide = document.createElement('div');
+	this._resumeGame = document.createElement('div');
+	this._resumeGame.className = 'game_end_button';
+	this._resumeGame.innerHTML = '再玩一局';
+	this._resumeGame.addEventListener('click',this.resumeGame.bind(this));
+
+	/*this._needGuide = document.createElement('div');
 	this._needGuide.className = 'game_end_button';
 	this._needGuide.innerHTML = '观看教程 >';
 	this._needGuide.addEventListener('click',this.needGudie.bind(this));
-	
+	*/
     this._gameEnd.appendChild(this._gameEndImg);
     this._gameEnd.appendChild(this._gameEndInfo);
-    this._gameEnd.appendChild(this._resumeGame);
     this._gameEnd.appendChild(this._gotoRecruit);
-    this._gameEnd.appendChild(this._needGuide);
+    this._gameEnd.appendChild(this._resumeGame);
+    //this._gameEnd.appendChild(this._needGuide);
     document.body.appendChild(this._gameEnd);
 };
 Game.showGameEnd = function() {	
@@ -341,7 +341,7 @@ Game.onUploadFinished = function(data) {
 	var floor = this._tableSprite.maxFloor();
 
 	this._gameEndInfo.innerHTML = deathText+'<br>';
-	this._gameEndInfo.innerHTML += '到达层数：<span class="floor">'+floor+'</span><br>';
+	//this._gameEndInfo.innerHTML += '到达层数：<span class="floor">'+floor+'</span><br>';
 	this._gameEndInfo.innerHTML += '最终分数：<span class="score">'+score+'</span><br>';
 
 	if(!data.status) return alert(data.msg);
@@ -356,7 +356,7 @@ Game.resumeGame = function() {
 	window.location.reload();
 };
 Game.gotoRecruit = function() {
-	alert('暂时未开通报名！');
+	window.location.assign("./main.html");
 };
 Game._createMainSprites = function() {
 	this._createSelectList();
@@ -427,7 +427,8 @@ Game._updateAllElements = function() {
 };
 
 Game._updateSize = function() {
-	this._updateBaseSize();/*
+	this._updateBaseSize();
+	this._updateBackgroundSize();/*
 	this._updateSelectListSize();
 	this._updateGameTableSize();*/
 };
@@ -439,6 +440,10 @@ Game._updateBaseSize = function() {
 	this._spacing = Game.Setting.InnerSpacing;
 	this._realWidth = this._width-this._padding*2;
 	this._realHeight = this._height-this._padding*2;
+};
+Game._updateBackgroundSize = function() {
+	this._background.width = this._width;
+	this._background.height = this._height;
 };
 /*
 Game._updateSelectListSize = function() {

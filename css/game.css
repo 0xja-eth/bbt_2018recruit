@@ -16,6 +16,8 @@
 	color:white;
 	text-align: center;
 
+	overflow-y: scroll;
+
 	z-index: 10;
 }
 	#game_end_img{
@@ -25,6 +27,7 @@
 	}
 	#game_end_info{
 		margin-top: 16px;
+		margin-bottom: 32px;
 		width: 80%;
 		margin-left: auto;
 		margin-right: auto;
@@ -50,10 +53,16 @@
 				font-weight: bold;
 			}
 	.game_end_button{
-		width: 40%;
+		width: 45%;
+		height: 36px;
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 16px;
+		padding: 4px 0px 8px 0px;
 		font-size: 24px;
-		font-weight: bold;
+		line-height: 36px;
+		border-color: white;
+		border-width: 1px;
+		border-style: solid;
+		border-radius: 4px;
 	}

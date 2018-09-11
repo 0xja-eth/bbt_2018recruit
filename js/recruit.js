@@ -32,6 +32,7 @@ var radioValues = { sex: ['男','女'], grade: ['大一','大二'], adjust: ['�
 var fields = {};
 var successMsg = '提交成功';
 var locatingTimeout = 3;
+var success = false;
 
 var centerer = document.getElementById('centerer');
 var alertMsg = document.getElementById('alertMsg');
@@ -91,7 +92,7 @@ function onRevise () {
 */
 function onReturn() {
 	back.style.boxShadow = bigBlur;
-	window.location.assign("index.html");
+	window.location.replace("main.html");
 }
 
 function onQuery(ret) {
@@ -337,26 +338,30 @@ function showAlert(msg) {
     alertWindow.style.animationFillMode = 'both';
 	alertMsg.innerHTML = msg;
 	if(msg == successMsg){
+		success = true;
 		locatingTimeout = 3;
 		var locatingTimer = setInterval(function () {
 			locatingMsg.textContent = "界面将在 " + locatingTimeout.toString() + " 秒后跳转";
 			--locatingTimeout;
-			if(locatingTimeout < 0) {
-				window.location.assign('index.html');
+			if(locatingTimeout < 0) {	
+				window.location.replace("main.html");
 				clearInterval(locatingTimer);
 			}
 		}, 1000);
 	}
 }
 function hideAlert() {
-	//revise.style.boxShadow = '';
-	alertButton.style.boxShadow = bigBlur;
-    alertWindow.style.animationName = 'alertHideAni';
-    alertWindow.style.animationDuration = '0.2s';
-    alertWindow.style.animationTimingFunction = 'linear';
-    alertWindow.style.animationDelay = '0';
-    alertWindow.style.animationFillMode = 'both';
-	setTimeout(function(){centerer.style.display = 'none';},200);
-	locatingTimeout = 0;
+	if(success){
+		window.location.replace("main.html");
+	}else{	
+		alertButton.style.boxShadow = bigBlur;
+	    alertWindow.style.animationName = 'alertHideAni';
+	    alertWindow.style.animationDuration = '0.2s';
+	    alertWindow.style.animationTimingFunction = 'linear';
+	    alertWindow.style.animationDelay = '0';
+	    alertWindow.style.animationFillMode = 'both';
+		setTimeout(function(){centerer.style.display = 'none';},200);
+		locatingTimeout = 0;
+	}
 }
 onStart();
