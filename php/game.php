@@ -1,7 +1,5 @@
 <?php
-	define("DatabaseName", "bbt_task");
-	define("UserName", "root");
-	define("Password", "");
+	include_once("config.php");
 	define("GameTableName", "game");
 
 	$times = 0;    
@@ -79,7 +77,7 @@
 	}
 
 	function main(){
-		$db = new MySQLi("localhost",UserName,Password,DatabaseName);
+		$db = new MySQLi(SERVERNAME,USERNAME,PASSWORD,DATABASE);
 
 		$ins = isset($_POST['ins'])? $_POST['ins'] : '';
 		$str = "";
