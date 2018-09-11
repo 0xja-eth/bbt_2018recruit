@@ -1,5 +1,5 @@
 <?php
-
+header('Content-type: applicant/json');
 function feedback($code, $message){
    $data = [
       "code"=> $code,

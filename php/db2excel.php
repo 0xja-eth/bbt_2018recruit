@@ -25,7 +25,8 @@ require_once __DIR__.'/vendor/phpoffice/phpspreadsheet/src/Bootstrap.php';
             $row['first'],$row['second'],$row['adjust'],$row['introduction']);
    }
    else{
-      $stmt = $link->prepare("SELECT * FROM applicant WHERE first=?");
+      $name .= "%";
+      $stmt = $link->prepare("SELECT * FROM applicant WHERE first LIKE ?");
       $stmt->bind_param("s", $name);
       $stmt->execute();
       $result = $stmt->get_result();
@@ -37,7 +38,7 @@ require_once __DIR__.'/vendor/phpoffice/phpspreadsheet/src/Bootstrap.php';
       $stmt->close();
 
 
-      $st = $link->prepare("SELECT * FROM applicant WHERE first<>? AND second=?");
+      $st = $link->prepare("SELECT * FROM applicant WHERE first NOT LIKE ? AND second LIKE ?");
       $st->bind_param("ss", $name, $name);
       $st->execute();
       $res = $st->get_result();
